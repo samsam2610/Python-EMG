@@ -8,7 +8,7 @@ import pandas as pd
 from drawnow import *
 
 
-order= 5
+order = 5
 fs = 2000
 cutoff = 10
 
