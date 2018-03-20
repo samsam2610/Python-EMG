@@ -66,8 +66,9 @@ for value in imu_Data.itertuples():
         index_record.append(value._1)
     previous_caching_value = receiving_caching_value
 
-size = 9
-distance = 75
+size = 15
+min_distance = 75
+max_distance = 100
 data_pack = deque([0]*size)
 data_pack_index = deque([0]*size)
 count_toe_off = 0
@@ -76,13 +77,13 @@ index_toe_off_record = []
 index_heel_strike_record = []
 
 
-def check_peak_diff(data: deque, distance, count_1, count_2):
+def check_peak_diff(data: deque, min_distance, max_distance, count_1, count_2):
     index_max = data.index(max(data))
     index_min = data.index(min(data))
     count_1_index = 0
     count_2_index = 0
 
-    if max(data) - min(data) >= distance:
+    if min_distance <= max(data) - min(data) <= max_distance:
         if index_max > index_min:
             count_1_index = index_max
             for index in range(index_min, index_max+1):
@@ -109,7 +110,7 @@ for value in diff.itertuples():
         count_toe_off, \
         count_heel_strike,\
         index_toe_off,\
-        index_heel_strike = check_peak_diff(data_pack, distance, count_toe_off, count_heel_strike)
+        index_heel_strike = check_peak_diff(data_pack, min_distance, max_distance, count_toe_off, count_heel_strike)
 
     if index_toe_off is not 0:
         index_toe_off_record.append(data_pack_index[index_toe_off])
