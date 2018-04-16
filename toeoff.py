@@ -1,4 +1,4 @@
-
+ 
 
 
 import numpy as np  # Import numpy
@@ -10,7 +10,7 @@ import pandas as pd
 from drawnow import *
 from collections import deque
 
-input_data = '/Users/Sam/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Final HSS Data 1_16_18/Main_Test_1_fast_walk_4__Rep_1.50.csv'
+input_data = '/Users/Sam/Library/Mobile Documents/com~apple~CloudDocs/Downloads/Folder/Final HSS Data 1_16_18/Main_Test_1_fast_walk_4__Rep_1.50.csv'
 
 data = pd.read_csv(input_data)
 string_part = ["TIBIALIS", "Gyro X"]
@@ -31,10 +31,6 @@ previous_value = 0
 count = 0
 loop_count = 0
 index_record = []
-
-
-
-
 
 def peak_counting(min_bound, max_bound, new_value, old_value, step, sign):
 
@@ -139,4 +135,3 @@ for index in index_heel_strike_record:
     ax[0].axvline(x=value, color='#45F112')
 
 plt.show()
-

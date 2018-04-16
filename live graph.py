@@ -2,9 +2,12 @@ import sys, serial
 import numpy as np
 import os
 from time import sleep
+import matplotlib
 from collections import deque
+matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 from pandas import DataFrame as df
+#import ble
 
 
 # class that holds analog data for N samples
@@ -70,7 +73,7 @@ def checkfile(path):
 
 
 # prepare data for export function
-def prepareData(arduinoString):
+def prepareData(arduinoString, dataLabel):
     dataArray = arduinoString.decode().split(',')
     dataValue = np.zeros((1, 13))
     dataValue[0, 0] = float(dataArray[1])
@@ -92,7 +95,7 @@ def main():
 
     strPort = '/dev/cu.usbmodem1411'
     # strPort = sys.argv[1];
-    path = '/Users/Sam/.spyder-py3/out.csv'
+    path = '/Users/Sam/Dropbox/Python/EMG Data/temp/out.csv'
     path = checkfile(path)
     # plot parameters
     analogData = AnalogData(100)
@@ -112,18 +115,19 @@ def main():
     while True:
         try:
             line = ser.readline()
-            toDf = prepareData(line)
+            toDf = prepareData(line, dataLabel)
             final_df = final_df.append(toDf)
             data = [toDf["angle"].iloc[-1], 0]
             # print data
             analogData.add(data)
             analogPlot.update(analogData)
-        except KeyboardInterrupt:
+        except (KeyboardInterrupt, SystemExit):
             print('exiting, exporting data')
             final_df.to_csv(path, index=False, header=False)
             print('finished')
             break
-    # close serial
+    # # close serial
+
     ser.flush()
     ser.close()
 
